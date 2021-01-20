@@ -46,6 +46,20 @@ If you're looking to compile from source, you'll need the following:
   * A [TMP117 Temperature Sensor](https://www.ti.com/product/TMP117) if you want local temperature readings
   * Some patience, as this repository isn't really intended for public use. (There may be unnoticed bugs/random rough edges)
 
+In order to cross comile this from windows to your raspberry pi, you'll have to run the following commands before building:
+
+  * `set GOOS=linux`
+  * `set GOARCH=arm`
+  * `set GOARM=5`
+
+Then, build the project.
+
+  * `go build ./`
+
+Simply upload everything to your raspberry pi, and you're done!
+
+PS- You may want to add the binary to crontab/similar, so it runs on startup.
+
 Contributing
 ------------
 

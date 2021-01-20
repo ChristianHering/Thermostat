@@ -42,8 +42,10 @@ func main() {
 }
 
 func displayLoop() {
-	var sensorTemps []float64 = append([]float64{}, getTemp())
+	var sensorTemps []float64
 	var rData Data
+
+	sensorTemps = append(sensorTemps, getTemp())
 
 	for true {
 		weatherData, err := getWeatherData()

@@ -194,7 +194,7 @@ func render(weatherData WeatherData, rData Data) image.Image {
 
 	ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Current.Temperature), 'f', 0, 32)+"°", 232.0, 100.0, 0.5, 0) //Outdoor Temperature
 	ctx.DrawStringAnchored(strconv.FormatFloat(rData.SensorTemp, 'f', 1, 32)+"°", 362.0, 100.0, 0.0, 0)                         //Indoor Temperature TODO
-	//ctx.DrawStringAnchored("72°", 784.0, 100.0, 1.0, 0)                                                                               //Used for setting indoor temperature
+	//ctx.DrawStringAnchored("72°", 784.0, 100.0, 1.0, 0)                                                                       //Used for setting indoor temperature
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 40)
 
@@ -212,38 +212,36 @@ func render(weatherData WeatherData, rData Data) image.Image {
 
 	var p = [][]float64{} //Positional data for text rasterization
 
-	p[0] = []float64{88.0, 305.0}
-	p[1] = []float64{245.0, 305.0}
-	p[2] = []float64{397.0, 305.0}
-	p[3] = []float64{550.0, 305.0}
-	p[4] = []float64{709.0, 305.0}
+	p = [][]float64{
+		{88.0, 305.0},
+		{245.0, 305.0},
+		{397.0, 305.0},
+		{550.0, 305.0},
+		{709.0, 305.0},
+	}
 
-	for i := 0; i < 4; i++ { //5 day weekday labels
-		ctx.DrawStringAnchored(time.Unix(weatherData.Daily[i+1].UnixTime, 0).Format("Mon"), p[i][0], p[i][1], 0.5, 0.5)
+	for i := 0; i < 5; i++ { //5 day weekday labels
+		ctx.DrawStringAnchored(time.Unix(weatherData.Daily[i].UnixTime, 0).Format("Mon"), p[i][0], p[i][1], 0.5, 0.5)
 	}
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 25)
 
-	p = [][]float64{}
+	p = [][]float64{
+		{24.0, 450.0},
+		{153.0, 450.0},
+		{185.0, 450.0},
+		{306.0, 450.0},
+		{338.0, 450.0},
+		{456.0, 450.0},
+		{488.0, 450.0},
+		{612.0, 450.0},
+		{644.0, 450.0},
+		{775.0, 450.0},
+	}
 
-	p[0] = []float64{24.0, 450.0}
-	p[1] = []float64{153.0, 450.0}
-
-	p[2] = []float64{185.0, 450.0}
-	p[3] = []float64{306.0, 450.0}
-
-	p[4] = []float64{338.0, 450.0}
-	p[5] = []float64{456.0, 450.0}
-
-	p[6] = []float64{488.0, 450.0}
-	p[7] = []float64{612.0, 450.0}
-
-	p[8] = []float64{644.0, 450.0}
-	p[9] = []float64{775.0, 450.0}
-
-	for i := 0; i < 4; i++ { //5 day min/max forcast
-		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i+1].Temperature.MinTemperature), 'f', 0, 32)+"°", p[i*2][0], p[i*2][1], 0.0, 0)
-		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i+1].Temperature.MaxTemperature), 'f', 0, 32)+"°", p[(i*2)+1][0], p[(i*2)+1][1], 1.0, 0)
+	for i := 0; i < 5; i++ { //5 day min/max forcast
+		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i].Temperature.MinTemperature), 'f', 0, 32)+"°", p[i*2][0], p[i*2][1], 0.0, 0)
+		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i].Temperature.MaxTemperature), 'f', 0, 32)+"°", p[(i*2)+1][0], p[(i*2)+1][1], 1.0, 0)
 	}
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 20)
@@ -263,16 +261,16 @@ func render(weatherData WeatherData, rData Data) image.Image {
 	img = getIconImage(WeatherIDMap[strconv.Itoa(weatherData.Current.Weather[0].ID)+currentState]) //Main Weather Icon
 	ctx.DrawImageAnchored(img, 65, 65, 0.5, 0.5)
 
-	p = [][]float64{}
+	p = [][]float64{
+		{69.0, 376.0},
+		{245.0, 376.0},
+		{397.0, 376.0},
+		{550.0, 376.0},
+		{709.0, 376.0},
+	}
 
-	p[0] = []float64{69.0, 376.0}
-	p[1] = []float64{245.0, 376.0}
-	p[2] = []float64{397.0, 376.0}
-	p[3] = []float64{550.0, 376.0}
-	p[4] = []float64{709.0, 376.0}
-
-	for i := 0; i < 4; i++ { //5 Day Forcast
-		img = getIconImage(WeatherIDMap[strconv.Itoa(weatherData.Daily[i+1].Weather[0].ID)+currentState])
+	for i := 0; i < 5; i++ { //5 Day Forcast
+		img = getIconImage(WeatherIDMap[strconv.Itoa(weatherData.Daily[i].Weather[0].ID)+currentState])
 		ctx.DrawImageAnchored(img, int(p[i][0]), int(p[i][1]), 0.5, 0.5)
 	}
 
