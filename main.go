@@ -26,22 +26,18 @@ func main() {
 		panic(err)
 	}
 
-	var catchFunc func()
-	catchFunc = func() {
-		defer func() {
-			if err := recover(); err != nil {
-				utils.LogError(fmt.Sprintf("%+v", err))
-
-				catchFunc()
-			}
-		}()
-
+	for {
 		displayLoop() //Recovers from panics, then restarts displayLoop
 	}
-	catchFunc()
 }
 
 func displayLoop() {
+	defer func() {
+		if err := recover(); err != nil {
+			utils.LogError(fmt.Sprintf("%+v", err))
+		}
+	}()
+
 	var sensorTemps []float64
 	var rData Data
 
@@ -61,17 +57,19 @@ func displayLoop() {
 		for i := 0; i < 5; i++ {
 			t, err := ioutil.ReadFile("/sys/class/thermal/thermal_zone0/temp") //CPU temp readout
 			if err != nil {
-				panic(err)
+				utils.LogError(err.Error())
 			}
 
 			temp, err := strconv.Atoi(strings.TrimSuffix(string(t), "\n"))
 			if err != nil {
-				panic(err)
+				temp = 0 //If the temperature read/conversion fails, set it to a default value
+
+				utils.LogError(err.Error())
 			}
 
 			t, err = ioutil.ReadFile("/proc/loadavg") //CPU load readout
 			if err != nil {
-				panic(err)
+				utils.LogError(err.Error())
 			}
 
 			rData.RenderTime = time.Now().Format("3:04pm")
