@@ -193,7 +193,7 @@ func render(weatherData WeatherData, rData Data) image.Image {
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 100)
 
 	ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Current.Temperature), 'f', 0, 32)+"°", 232.0, 100.0, 0.5, 0) //Outdoor Temperature
-	ctx.DrawStringAnchored(strconv.FormatFloat(rData.SensorTemp, 'f', 1, 32)+"°", 362.0, 100.0, 0.0, 0)                         //Indoor Temperature TODO
+	ctx.DrawStringAnchored(strconv.FormatFloat(rData.SensorTemp, 'f', 1, 32)+"°", 362.0, 100.0, 0.0, 0)                         //Indoor Temperature
 	//ctx.DrawStringAnchored("72°", 784.0, 100.0, 1.0, 0)                                                                       //Used for setting indoor temperature
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 40)
