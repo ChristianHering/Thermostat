@@ -43,7 +43,7 @@ func displayLoop() {
 
 	sensorTemps = append(sensorTemps, getTemp())
 
-	for true {
+	for {
 		weatherData, err := getWeatherData()
 		if err != nil {
 			panic(err)

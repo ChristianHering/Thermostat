@@ -11,10 +11,9 @@ import (
 	"github.com/ChristianHering/Thermostat/utils"
 )
 
-const (
-	width  = 800
-	height = 480
-)
+//E-Paper display resolution
+//width  = 800
+//height = 480
 
 //Data holds extra information rendered by our renderer function
 type Data struct {
@@ -168,12 +167,12 @@ func render(weatherData WeatherData, rData Data) image.Image {
 	var sunState string
 
 	for i := 0; sunTime.Before(time.Now()); i++ {
-		if time.Unix(weatherData.Daily[i].SunriseTime, 0).After(time.Now()) {
-			sunTime = time.Unix(weatherData.Daily[i].SunriseTime, 0)
+		if time.Unix(int64(weatherData.Daily[i].Sunrise), 0).After(time.Now()) {
+			sunTime = time.Unix(int64(weatherData.Daily[i].Sunrise), 0)
 			sunState = "Sunrise"
 			break
-		} else if time.Unix(weatherData.Daily[i].SunsetTime, 0).After(time.Now()) {
-			sunTime = time.Unix(weatherData.Daily[i].SunsetTime, 0)
+		} else if time.Unix(int64(weatherData.Daily[i].Sunset), 0).After(time.Now()) {
+			sunTime = time.Unix(int64(weatherData.Daily[i].Sunset), 0)
 			sunState = "Sunset"
 			break
 		}
@@ -192,21 +191,21 @@ func render(weatherData WeatherData, rData Data) image.Image {
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 100)
 
-	ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Current.Temperature), 'f', 0, 32)+"°", 232.0, 100.0, 0.5, 0) //Outdoor Temperature
-	ctx.DrawStringAnchored(strconv.FormatFloat(rData.SensorTemp, 'f', 1, 32)+"°", 362.0, 100.0, 0.0, 0)                         //Indoor Temperature
+	ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Current.Temp), 'f', 0, 32)+"°", 232.0, 100.0, 0.5, 0) //Outdoor Temperature
+	ctx.DrawStringAnchored(strconv.FormatFloat(rData.SensorTemp, 'f', 1, 32)+"°", 362.0, 100.0, 0.0, 0)                  //Indoor Temperature
 	//ctx.DrawStringAnchored("72°", 784.0, 100.0, 1.0, 0)                                                                       //Used for setting indoor temperature
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 40)
 
 	//Left Data Panel
-	ctx.DrawStringAnchored("Feels Like: "+strconv.FormatFloat(float64(weatherData.Current.TemperaturePerception), 'f', 0, 32)+"°", 175.0, 150.0, 0.5, 0) //Spelling of "Real" intentional
+	ctx.DrawStringAnchored("Feels Like: "+strconv.FormatFloat(float64(weatherData.Current.FeelsLike), 'f', 0, 32)+"°", 175.0, 150.0, 0.5, 0) //Spelling of "Real" intentional
 	ctx.DrawStringAnchored("Humidity: "+strconv.Itoa(weatherData.Current.Humidity)+"%", 175.0, 200.0, 0.5, 0)
 	ctx.DrawStringAnchored("PoP (rain): "+strconv.Itoa(int(weatherData.Daily[0].Pop*100))+"%", 175.0, 250.0, 0.5, 0)
 
 	//Right Data Panel
-	ctx.DrawStringAnchored("Wind: "+CardinalDirectionMap[int(float64(weatherData.Current.WindDirection)/22.5)]+" @ "+strconv.Itoa(int(weatherData.Current.WindSpeed))+"mph", 570.5, 150.0, 0.5, 0)
+	ctx.DrawStringAnchored("Wind: "+CardinalDirectionMap[int(float64(weatherData.Current.WindDeg)/22.5)]+" @ "+strconv.Itoa(int(weatherData.Current.WindSpeed))+"mph", 570.5, 150.0, 0.5, 0)
 	ctx.DrawStringAnchored(sunState+" at "+sunTime.Format("3:04pm"), 570.5, 200.0, 0.5, 0)
-	ctx.DrawStringAnchored("Pressure: "+strconv.FormatFloat(float64(weatherData.Current.AtmosphericPressure)*0.02953, 'f', 2, 32)+"inHg", 570.5, 250.0, 0.5, 0)
+	ctx.DrawStringAnchored("Pressure: "+strconv.FormatFloat(float64(weatherData.Current.Pressure)*0.02953, 'f', 2, 32)+"inHg", 570.5, 250.0, 0.5, 0)
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 30)
 
@@ -221,7 +220,7 @@ func render(weatherData WeatherData, rData Data) image.Image {
 	}
 
 	for i := 0; i < 5; i++ { //5 day weekday labels
-		ctx.DrawStringAnchored(time.Unix(weatherData.Daily[i].UnixTime, 0).Format("Mon"), p[i][0], p[i][1], 0.5, 0.5)
+		ctx.DrawStringAnchored(time.Unix(int64(weatherData.Daily[i].Dt), 0).Format("Mon"), p[i][0], p[i][1], 0.5, 0.5)
 	}
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 25)
@@ -240,8 +239,8 @@ func render(weatherData WeatherData, rData Data) image.Image {
 	}
 
 	for i := 0; i < 5; i++ { //5 day min/max forcast
-		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i].Temperature.MinTemperature), 'f', 0, 32)+"°", p[i*2][0], p[i*2][1], 0.0, 0)
-		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i].Temperature.MaxTemperature), 'f', 0, 32)+"°", p[(i*2)+1][0], p[(i*2)+1][1], 1.0, 0)
+		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i].Temp.Min), 'f', 0, 32)+"°", p[i*2][0], p[i*2][1], 0.0, 0)
+		ctx.DrawStringAnchored(strconv.FormatFloat(float64(weatherData.Daily[i].Temp.Max), 'f', 0, 32)+"°", p[(i*2)+1][0], p[(i*2)+1][1], 1.0, 0)
 	}
 
 	ctx.LoadFontFace("./render/fonts/OpenSans-Bold.ttf", 20)
@@ -255,13 +254,18 @@ func render(weatherData WeatherData, rData Data) image.Image {
 
 	//Icon rendering to display image
 
-	currentState := weatherData.Current.Weather[0].IconID
+	currentState := weatherData.Current.Weather[0].Icon
 	currentState = currentState[len(currentState)-1:]
 
 	img = getIconImage(WeatherIDMap[strconv.Itoa(weatherData.Current.Weather[0].ID)+currentState]) //Main Weather Icon
 	ctx.DrawImageAnchored(img, 65, 65, 0.5, 0.5)
 
-	p = [][]float64{
+	if len(weatherData.Alerts) != 0 {
+		img = getIconImage("weatherAlert.png")
+		ctx.DrawImageAnchored(img, 735, 65, 0.5, 0.5) //Extreme Weather Alert Icon
+	}
+
+	p = [][]float64{ //5 Day Forcast Icon Positions
 		{69.0, 376.0},
 		{245.0, 376.0},
 		{397.0, 376.0},
