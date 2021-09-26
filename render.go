@@ -261,8 +261,8 @@ func render(weatherData WeatherData, rData Data) image.Image {
 	ctx.DrawImageAnchored(img, 65, 65, 0.5, 0.5)
 
 	if len(weatherData.Alerts) != 0 {
-		img = getIconImage("weatherAlert.png")
-		ctx.DrawImageAnchored(img, 735, 65, 0.5, 0.5) //Extreme Weather Alert Icon
+		img = getIconImage("weatherAlert")
+		ctx.DrawImageAnchored(img, 730, 50, 0.5, 0.5) //Extreme Weather Alert Icon
 	}
 
 	p = [][]float64{ //5 Day Forcast Icon Positions

@@ -25,7 +25,7 @@ type WeatherData struct {
 		Pressure   int     `json:"pressure"`
 		Humidity   int     `json:"humidity"`
 		DewPoint   float64 `json:"dew_point"`
-		Uvi        int     `json:"uvi"`
+		Uvi        float64 `json:"uvi"`
 		Clouds     int     `json:"clouds"`
 		Visibility int     `json:"visibility"`
 		WindSpeed  float64 `json:"wind_speed"`
@@ -48,7 +48,7 @@ type WeatherData struct {
 		Pressure   int     `json:"pressure"`
 		Humidity   int     `json:"humidity"`
 		DewPoint   float64 `json:"dew_point"`
-		Uvi        int     `json:"uvi"`
+		Uvi        float64 `json:"uvi"`
 		Clouds     int     `json:"clouds"`
 		Visibility int     `json:"visibility"`
 		WindSpeed  float64 `json:"wind_speed"`
@@ -60,7 +60,7 @@ type WeatherData struct {
 			Description string `json:"description"`
 			Icon        string `json:"icon"`
 		} `json:"weather"`
-		Pop int `json:"pop"`
+		Pop float64 `json:"pop"`
 	} `json:"hourly"`
 	Daily []struct {
 		Dt        int     `json:"dt"`
@@ -96,7 +96,7 @@ type WeatherData struct {
 			Icon        string `json:"icon"`
 		} `json:"weather"`
 		Clouds int     `json:"clouds"`
-		Pop    int     `json:"pop"`
+		Pop    float64 `json:"pop"`
 		Uvi    float64 `json:"uvi"`
 		Rain   float64 `json:"rain,omitempty"`
 	} `json:"daily"`
@@ -107,7 +107,7 @@ type WeatherData struct {
 		End         int      `json:"end"`
 		Description string   `json:"description"`
 		Tags        []string `json:"tags"`
-	} `json:"alerts"`
+	} `json:"alerts,omitempty"`
 }
 
 //getWeatherData returns a struct of weather
