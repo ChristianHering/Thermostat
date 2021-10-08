@@ -38,8 +38,8 @@ type WeatherData struct {
 		} `json:"weather"`
 	} `json:"current"`
 	Minutely []struct {
-		Dt            int `json:"dt"`
-		Precipitation int `json:"precipitation"`
+		Dt            int     `json:"dt"`
+		Precipitation float64 `json:"precipitation"`
 	} `json:"minutely"`
 	Hourly []struct {
 		Dt         int     `json:"dt"`
